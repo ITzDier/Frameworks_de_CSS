@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard con Tailwind y Chart.js</title>
+    <!-- CDN de Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- CDN de Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-100 p-8">
+
+    <div class="max-w-6xl mx-auto bg-white p-10 rounded-xl shadow-sm">
+        <!-- Encabezado -->
+        <header class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-800">Dashboard</h1>
+            <p class="text-gray-500">Bienvenido de nuevo, admin.</p>
+        </header>
+
+        <!-- Tarjetas de Estadísticas -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+            <!-- Usuarios Totales -->
+            <div class="border rounded-lg p-5 shadow-sm">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="text-sm font-medium text-gray-500">Usuarios Totales</span>
+                    <span class="text-green-500 bg-green-100 text-xs font-bold px-2 py-1 rounded">+12%</span>
+                </div>
+                <div class="text-2xl font-bold text-gray-800">8,249</div>
+                <div class="text-xs text-gray-400 mt-1">Aumentó 1,093 esta semana</div>
+            </div>
+
+            <!-- Ingresos -->
+            <div class="border rounded-lg p-5 shadow-sm">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="text-sm font-medium text-gray-500">Ingresos</span>
+                    <span class="text-green-500 bg-green-100 text-xs font-bold px-2 py-1 rounded">+8%</span>
+                </div>
+                <div class="text-2xl font-bold text-gray-800">$24,780</div>
+                <div class="text-xs text-gray-400 mt-1">$2,567 más que el mes pasado</div>
+            </div>
+
+            <!-- Sesiones Activas -->
+            <div class="border rounded-lg p-5 shadow-sm">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="text-sm font-medium text-gray-500">Sesiones Activas</span>
+                    <span class="text-red-500 bg-red-100 text-xs font-bold px-2 py-1 rounded">-3%</span>
+                </div>
+                <div class="text-2xl font-bold text-gray-800">1,342</div>
+                <div class="text-xs text-gray-400 mt-1">42 menos que ayer</div>
+            </div>
+
+            <!-- Tasa de Conversión -->
+            <div class="border rounded-lg p-5 shadow-sm">
+                <div class="flex justify-between items-start mb-2">
+                    <span class="text-sm font-medium text-gray-500">Tasa de Conversión</span>
+                    <span class="text-green-500 bg-green-100 text-xs font-bold px-2 py-1 rounded">+5%</span>
+                </div>
+                <div class="text-2xl font-bold text-gray-800">24.8%</div>
+                <div class="text-xs text-gray-400 mt-1">1.2% más que el promedio</div>
+            </div>
+        </div>
+
+        <!-- Sección de Gráficas -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Gráfica de Línea -->
+            <div class="border rounded-lg p-6 shadow-sm">
+                <h2 class="font-bold text-gray-700 mb-4">Crecimiento de Usuarios</h2>
+                <div class="h-64">
+                    <canvas id="lineChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Gráfica de Barras -->
+            <div class="border rounded-lg p-6 shadow-sm">
+                <h2 class="font-bold text-gray-700 mb-4">Ingresos Mensuales</h2>
+                <div class="h-64">
+                    <canvas id="barChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tu código JavaScript original -->
+    <script>
+        // Datos para la gráfica de línea
+        const lineCtx = document.getElementById('lineChart').getContext('2d');
+        const lineChart = new Chart(lineCtx, {
+            type: 'line',
+            data: {
+                labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                datasets: [{
+                    label: 'Usuarios 2024',
+                    data: [5000, 5500, 6000, 6200, 6800, 7200, 7500, 8000, 8249, 8500, 8800, 9100],
+                    borderColor: 'rgb(59, 130, 246)',
+                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                    tension: 0.3,
+                    fill: true
+                }, {
+                    label: 'Usuarios 2023',
+                    data: [4000, 4200, 4500, 4800, 5100, 5400, 5600, 5900, 6200, 6500, 6800, 7000],
+                    borderColor: 'rgb(107, 114, 128)',
+                    backgroundColor: 'rgba(107, 114, 128, 0.1)',
+                    tension: 0.3,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Datos para la gráfica de barras
+        const barCtx = document.getElementById('barChart').getContext('2d');
+        const barChart = new Chart(barCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                datasets: [{
+                    label: 'Ingresos 2024 ($)',
+                    data: [15000, 16500, 18000, 19500, 21000, 22500, 23000, 24000, 24780, 26000, 27500, 29000],
+                    backgroundColor: 'rgba(59, 130, 246, 0.8)'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
